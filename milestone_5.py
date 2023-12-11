@@ -20,18 +20,24 @@ class Hangman:
         self.list_of_guesses = []
     
     def check_guess(self, guess):
+         #Converts the input to lower case
          guess = guess.lower()
-         if guess in self.word:
+         #looks for the letter in the randomly generated word
+         if guess in self.word and guess not in self.list_of_guesses:
            print (f'Good guess! {guess} is in the word.')
-           for letter in enumerate(self.word):
+
+           for i, letter in enumerate(self.word):
              if letter == guess:
-               self.word_guessed[letter] = guess
-               self.num_letters -= 1
+               self.word_guessed[i] = guess
+               
+           self.num_letters -= 1
+
          else: 
           self.num_lives -= 1 
           print(f"Sorry, {guess} is not in the word.")
           print(f"You have {self.num_lives} lives left.")
-               
+       
+         print(f"Word: {' '.join(self.word_guessed)}")     
 
     def ask_for_input (self):
          #Checks if users input format is correct
@@ -46,15 +52,17 @@ class Hangman:
           self.check_guess(guess)
           self.list_of_guesses.append(guess)
           break
+       
 #Brings all the above together to allow user to play full game      
 def play_game (word_list):
     num_lives = 5
     game = Hangman(word_list, num_lives)
+
     while True:
         if game.num_lives == 0:
             print('You lost!')
             break
-        elif game.num_letters >0:
+        elif game.num_letters > 0:
              game.ask_for_input()
         else:
             print ('you won the game')
